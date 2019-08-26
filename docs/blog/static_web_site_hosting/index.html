@@ -1,0 +1,467 @@
+<!doctype html>
+<html lang="en">
+  <head>
+  <meta charset="utf-8">
+<title>Static Web site hosting on AWS S3 ~ Part I ~ - Takahiro Suzuki Personal Blog</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png?v=1">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png?v=1">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png?v=1">
+  <link rel="manifest" href="/favicon/site.webmanifest?v=1">
+  
+    <link rel="mask-icon" href="/favicon/safari-pinned-tab.svg?v=1" color="#ffffff">
+    <link rel="shortcut icon" href="/favicon/favicon.ico?v=1">
+    <meta name="msapplication-config" content="/favicon/browserconfig.xml?v=1">
+  
+  <meta name="msapplication-TileColor" content="#ffffff">
+  <meta name="theme-color" content="#ffffff">
+
+
+  <meta name="generator" content="Hugo 0.55.5" />
+  
+<meta itemprop="name" content="Static Web site hosting on AWS S3 ~ Part I ~">
+<meta itemprop="description" content="Generate static site with HUGO, and deploy to robust AWS S3 with CI/CD pipeline by GitHub and Travis CI">
+
+
+<meta itemprop="datePublished" content="2019-08-25T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-08-25T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="362">
+
+
+
+<meta itemprop="keywords" content="" />
+
+  <meta property="og:title" content="Static Web site hosting on AWS S3 ~ Part I ~" />
+<meta property="og:description" content="Generate static site with HUGO, and deploy to robust AWS S3 with CI/CD pipeline by GitHub and Travis CI" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="https://example.com/blog/static_web_site_hosting/" />
+<meta property="article:published_time" content="2019-08-25T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2019-08-25T00:00:00&#43;00:00"/>
+
+  <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="Static Web site hosting on AWS S3 ~ Part I ~"/>
+<meta name="twitter:description" content="Generate static site with HUGO, and deploy to robust AWS S3 with CI/CD pipeline by GitHub and Travis CI"/>
+<meta name="twitter:site" content="@example"/>
+
+  
+
+  <link rel="stylesheet"
+      href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
+  
+    
+      <link rel="stylesheet" href="/css/normalize.css">
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:400,800,900|Source+Sans+Pro:400,700">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/academicons/1.8.6/css/academicons.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.9.0/css/all.css" integrity="sha384-i1LQnF23gykqWXg6jxC2ZbCbUMxyw5gLZY6UiUS98LYV5unm8GWmfkIS6jqJfb4E" crossorigin="anonymous">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.css" />
+      
+      
+      <link rel="stylesheet" href="/css/main.min.0a64f3eede6e78edc2d8b2ca7051e4d9a6379f472dac76b1168733b88d27146a.css" integrity="sha256-CmTz7t5ueO3C2LLKcFHk2aY3n0ctrHaxFoczuI0nFGo=">
+      <link rel="stylesheet" href="/css/add-on.css">
+    
+  
+  
+  
+  
+</head>
+
+  <body>
+    
+<header id="site-header">
+  <nav id="site-nav">
+    <h1 class="nav-title">
+      <a href="/">
+        
+          
+            Blog
+          
+        
+      </a>
+    </h1>
+    <menu id="site-nav-menu" class="flyout-menu">
+      
+        
+          
+          <a href="/" class="link"><i class="fas fa-home">&nbsp;</i>Home</a>
+        
+      
+        
+          
+          <a href="/about/" class="link"><i class="far fa-id-card">&nbsp;</i>About</a>
+        
+      
+        
+          
+          <a href="/blog/" class="link"><i class="far fa-newspaper">&nbsp;</i>Blog</a>
+        
+      
+        
+          
+          <a href="/contact/" class="link"><i class="far fa-envelope">&nbsp;</i>Contact</a>
+        
+      
+      
+      
+
+    </menu>
+    
+
+    
+    
+    <a href="#site-nav" class="nav-toggle"><i class="fas fa-bars fa-2x"></i></a>
+  </nav>
+  
+  
+</header>
+
+    <div id="wrapper">
+      <section id="site-intro">
+  <a href="/"><img src="/img/main/profile.png" class="circle" width="200" alt="Profile Picture" /></a>
+  <header>
+    <h1>Takahiro Suzuki</h1>
+  </header>
+  <main>
+    <p>Why are you keeping this curiosity door locked?!</p>
+  </main>
+  
+    <footer>
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/funabashi800" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//linkedin.com/in/takahiro-suzuki-aba781168" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+<li><a href="//facebook.com/takahiro810" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+
+
+
+
+
+
+
+
+<li><a href="//instagram.com/pijopijogogo" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+<li><a href="mailto:8114055@ed.tus.ac.jp" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+    </footer>
+  
+</section>
+
+      <main id="site-main">
+        <article class="post">
+  <header>
+  <div class="title">
+    
+        <h2><a href="/blog/static_web_site_hosting/">Static Web site hosting on AWS S3 ~ Part I ~</a></h2>
+    
+    
+        <p>Generate static site with HUGO, and deploy to robust AWS S3 with CI/CD pipeline by GitHub and Travis CI</p>
+    
+</div>
+  <div class="meta">
+    <time class="published" datetime="2019-08-25 00:00:00 &#43;0000 UTC">
+      August 25, 2019
+    </time>
+    <span class="author">Takahiro Suzuki</span>
+    
+      <p>2 minutes read</p>
+    
+  </div>
+</header>
+
+  <section id="socnet-share">
+    
+
+
+
+
+  
+    
+    <a href="//twitter.com/share?text=Static%20Web%20site%20hosting%20on%20AWS%20S3%20~%20Part%20I%20~&amp;url=https%3a%2f%2fexample.com%2fblog%2fstatic_web_site_hosting%2f" target="_blank" rel="noopener" class="share-btn twitter">
+        <i class="fab fa-twitter"></i><p>&nbsp;Twitter</p>
+      </a>
+  
+
+  
+      <a href="//www.facebook.com/sharer/sharer.php?u=https%3a%2f%2fexample.com%2fblog%2fstatic_web_site_hosting%2f" target="_blank" rel="noopener" class="share-btn facebook">
+        <i class="fab fa-facebook"></i><p>&nbsp;Facebook</p>
+        </a>
+  
+
+  
+    <a href="//www.reddit.com/submit?url=https%3a%2f%2fexample.com%2fblog%2fstatic_web_site_hosting%2f&amp;title=Static%20Web%20site%20hosting%20on%20AWS%20S3%20~%20Part%20I%20~" target="_blank" rel="noopener" class="share-btn reddit">
+          <i class="fab fa-reddit-alien"></i><p>&nbsp;Reddit</p>
+        </a>
+  
+
+  
+        <a href="//www.linkedin.com/shareArticle?url=https%3a%2f%2fexample.com%2fblog%2fstatic_web_site_hosting%2f&amp;title=Static%20Web%20site%20hosting%20on%20AWS%20S3%20~%20Part%20I%20~" target="_blank" rel="noopener" class="share-btn linkedin">
+            <i class="fab fa-linkedin"></i><p>&nbsp;LinkedIn</p>
+          </a>
+  
+
+  
+        <a href="mailto:?subject=Check out this post by %7b%20%20%20%20%20%20%20%20map%5b%5d%7d&amp;body=https%3a%2f%2fexample.com%2fblog%2fstatic_web_site_hosting%2f" target="_blank" class="share-btn email" data-proofer-ignore>
+          <i class="fas fa-envelope"></i><p>&nbsp;Email</p>
+        </a>
+  
+
+
+  </section>
+  
+  <a href="/blog/static_web_site_hosting/" class="image featured">
+    <img src="/img/2019/08/pic02.png" alt="Pic 1">
+  </a>
+
+
+  <div class="content">
+    
+
+<p>Hello Coder🤩! Welcome to my personal blog! This is my first post. I&rsquo;m gonna introduce you to the architecture behind this blog, and I would like to show you how easy to create personal blog with <a href="https://gohugo.io/">HUGO</a>, and how to deploy your static site to AWS S3 based on the <a href="https://d1.awsstatic.com/whitepapers/Building%20Static%20Websites%20on%20AWS.pdf">best practice</a>.</p>
+
+<h3 id="hugo">HUGO</h3>
+
+<figure>
+    <img src="/img/2019/08/pic01.png"/> 
+</figure>
+
+
+<p>Recently, a lot of static site generator is available for free, like Nuxt.js, GatsbyJS, HUGO, NEXT.js, etc. One of the reasons I decided to go with HUGO is the variety of template, which is much more than others.
+Hopefully, we don&rsquo;t need to write HTML &amp; CSS from scratch in order just to create a simple static blog. I would say it is sort of &ldquo;Reinvent the wheel&rdquo;. You should spend much more to write your logic instead of stacking with frastrating UI problem. So, let&rsquo;s dive into HUGO 🚀🚀🚀</p>
+
+<pre><code class="language-zsh"># Install hugo with homebrew (NOTE: for only mac users)
+$ brew install hugo
+
+# Create your project
+$ brew new site [Your Project Name]
+
+# Add Theme
+$ cd [Your Project Name]
+$ git init
+$ git submodule add https://github.com/pacollins/hugo-future-imperfect-slim.git themes/hugo-future-imperfect-slim
+$ echo 'theme = &quot;hugo-future-imperfect-slim&quot;' &gt;&gt; config.toml
+
+# Apply Example Style
+$ cp -r themes/hugo-future-imperfect-slim/exampleSite/* ./
+</code></pre>
+
+<p>Now you are ready to start a journey to your own blog. Generally, you wouldn&rsquo;t need to write HTML, CSS, and Javascript by yourself. Only you have to write is just Markdown. But almost all you might customize a theme with a little bit your own commitment. If so, you can do some minor changes, like an icon, header, content to display, etc. You can also check your page&rsquo;s UI with following command.</p>
+
+<pre><code class="language-zsh"># Add new post
+$ hugo new content/blog/my_first_blog.md
+
+# Start a HUGO server
+$ hugo server -w
+
+# Generate static file -&gt; /public
+$ hugo
+</code></pre>
+
+<h3 id="thank-you-for-reading">Thank you for reading!</h3>
+
+<p>In a next post, I&rsquo;m gonna show you how to deploy a static site generated by HUGO to AWS S3, and apply https to it by using AWS CloudFront. Before moving on to the next post, please make sure you have AWS account and have an IAM account which has FullAccess permission to S3 and CloudFront. See you soon!</p>
+
+  </div>
+  <footer>
+    <ul class="stats">
+  
+    
+    
+      <li class="categories">
+        <ul>
+          
+            
+            <li><a class="article-category-link" href="https://example.com/categories/hugo">Hugo</a></li>
+          
+        </ul>
+      </li>
+    
+  
+  
+    <li class="tags">
+      <ul>
+        <li>None</li>
+      </ul>
+    </li>
+  
+</ul>
+
+  </footer>
+</article>
+
+
+<div class="pagination">
+  
+    <a href="/blog/static_web_site_hosting_2/" class="button big previous"><i class="fas fa-angle-left"></i> Static Web site hosting on AWS S3 ~ Part II ~</a>
+  
+  
+</div>
+
+
+      </main>
+      <section id="site-sidebar">
+  
+    <section id="recent-posts">
+      <header>
+        <h1>Recent posts</h1>
+      </header>
+      
+      <article class="mini-post">
+        <section>
+          
+  <a href="/blog/static_web_site_hosting/" class="image featured">
+    <img src="/img/2019/08/pic02.png" alt="Pic 1">
+  </a>
+
+
+        </section>
+        <header>
+          <h1><a href="/blog/static_web_site_hosting/">Static Web site hosting on AWS S3 ~ Part I ~</a></h1>
+          <time class="published" datetime="">August 25, 2019</time>
+        </header>
+      </article>
+      
+      <article class="mini-post">
+        <section>
+          
+  <a href="/blog/static_web_site_hosting_2/" class="image featured">
+    <img src="/img/2019/08/pic02.png" alt="Pic 1">
+  </a>
+
+
+        </section>
+        <header>
+          <h1><a href="/blog/static_web_site_hosting_2/">Static Web site hosting on AWS S3 ~ Part II ~</a></h1>
+          <time class="published" datetime="">August 25, 2019</time>
+        </header>
+      </article>
+      
+      
+    </section>
+  
+
+  
+
+  <section id="mini-bio">
+    <header>
+      <h1>About</h1>
+    </header>
+    <p>test</p>
+    <footer>
+      <a href="/about" class="button">Learn More</a>
+    </footer>
+  </section>
+</section>
+
+      <footer id="site-footer">
+  
+      <ul class="socnet-icons">
+        
+
+        <li><a href="//github.com/funabashi800" target="_blank" rel="noopener" title="GitHub" class="fab fa-github"></a></li>
+
+
+
+
+
+
+
+
+
+
+
+<li><a href="//linkedin.com/in/takahiro-suzuki-aba781168" target="_blank" rel="noopener" title="LinkedIn" class="fab fa-linkedin"></a></li>
+
+
+
+
+<li><a href="//facebook.com/takahiro810" target="_blank" rel="noopener" title="Facebook" class="fab fa-facebook"></a></li>
+
+
+
+
+
+
+
+
+<li><a href="//instagram.com/pijopijogogo" target="_blank" rel="noopener" title="Instagram" class="fab fa-instagram"></a></li>
+
+<li><a href="//twitter.com/example" target="_blank" rel="noopener" title="Twitter" class="fab fa-twitter"></a></li>
+
+
+
+
+
+
+
+
+
+
+<li><a href="mailto:8114055@ed.tus.ac.jp" target="_blank" title="Email" class="far fa-envelope"></a></li>
+
+      </ul>
+  
+  <p class="copyright">
+    
+      &copy; 2019
+      
+        Takahiro Suzuki Personal Blog
+      
+    . <br>
+    Theme: <a href='https://github.com/pacollins/hugo-future-imperfect-slim' target='_blank' rel='noopener'>Hugo Future Imperfect Slim</a><br>A <a href='https://html5up.net/future-imperfect' target='_blank' rel='noopener'>HTML5 UP port</a> | Powered by <a href='https://gohugo.io/' title='0.55.5' target='_blank' rel='noopener'>Hugo</a>
+  </p>
+</footer>
+<a id="back-to-top" href="#" class="fas fa-arrow-up fa-2x"></a>
+
+      
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/html.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/css.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/js.min.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/languages/toml.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script>
+
+
+  
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/skel/3.0.1/skel.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.3.5/jquery.fancybox.min.js"></script>
+  <script src=/js/util.js></script>
+  <script src=/js/main.js></script>
+  <script src=/js/add-on.js></script>
+  
+
+<script src='/js/staticman.js'></script>
+  
+
+
+
+    </div>
+  </body>
+</html>

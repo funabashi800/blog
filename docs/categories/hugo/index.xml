@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hugo on Takahiro Suzuki Personal Blog</title>
+    <link>https://example.com/categories/hugo/</link>
+    <description>Recent content in Hugo on Takahiro Suzuki Personal Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <lastBuildDate>Sun, 25 Aug 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://example.com/categories/hugo/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Static Web site hosting on AWS S3 ~ Part I ~</title>
+      <link>https://example.com/blog/static_web_site_hosting/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/blog/static_web_site_hosting/</guid>
+      <description>Hello Coder🤩! Welcome to my personal blog! This is my first post. I&amp;rsquo;m gonna introduce you to the architecture behind this blog, and I would like to show you how easy to create personal blog with HUGO, and how to deploy your static site to AWS S3 based on the best practice.
+HUGO   Recently, a lot of static site generator is available for free, like Nuxt.js, GatsbyJS, HUGO, NEXT.</description>
+    </item>
+    
+    <item>
+      <title>Static Web site hosting on AWS S3 ~ Part II ~</title>
+      <link>https://example.com/blog/static_web_site_hosting_2/</link>
+      <pubDate>Sun, 25 Aug 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://example.com/blog/static_web_site_hosting_2/</guid>
+      <description>Hello Coder🤩! Welcome to my personal blog! This post will show you how to deploy HUGO static site from GitHub to AWS S3 automatically via TravisCI.
+Create S3 Bucket First of all, let&amp;rsquo;s make an S3 bucket to host static site, but before that, you need IAM account which has a managed permission to S3 because you have to need to deploy some files via TravisCI programmatically.
+  Static Website Hosting     Public Access Control   After creating a S3 bucket allowed for public access, you need to attach some policy to the S3 bucket, because you are going to upload multiple file to S3 bucket programmatically.</description>
+    </item>
+    
+  </channel>
+</rss>
