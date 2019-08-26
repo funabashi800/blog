@@ -1,14 +1,13 @@
-baseurl                 = "https://example.com/"
+baseurl                 = "https://funabashi800.github.io/"
 DefaultContentLanguage  = "en"
 title                   = "Takahiro Suzuki Personal Blog"
 theme                   = "hugo-future-imperfect-slim"
 preserveTaxonomyNames   = true
 paginate                = 3
 disqusShortname         = ""
-googleAnalytics         = ""
+googleAnalytics         = "UA-146465601-1"
 pluralizeListTitles     = false
 disableLanguages        = [""]
-publishDir = "docs"
 
 [params]
   mainSections = ["blog", "post"]
