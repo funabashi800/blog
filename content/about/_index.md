@@ -30,4 +30,4 @@ Beside my research in laboratory, I love programming about Web
 ### Language
 * Japanease (native)
 * English
-* Chinease (still studying....)
+* Chinease (still beginner....)

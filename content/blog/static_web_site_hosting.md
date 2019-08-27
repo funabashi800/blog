@@ -27,7 +27,7 @@ Hopefully, we don't need to write HTML & CSS from scratch in order just to creat
 $ brew install hugo
 
 # Create your project
-$ brew new site [Your Project Name]
+$ hugo new site [Your Project Name]
 
 # Add Theme
 $ cd [Your Project Name]
